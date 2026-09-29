@@ -35,10 +35,10 @@
             name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
             labels:
               - "AWS AIOps AO Lightspeed (Insights) Forwarder"
-            job_args:
-              extra_vars:
-                webhook_path: "aiops-cve-rhel"
-                ansible_eda: "{{ event }}"
+            # job_args:
+            #   extra_vars:
+            #     webhook_path: "aiops-cve-rhel"
+            #     ansible_eda: "{{ event }}"
 
     - name: Match all System known exploit vulnerability events
     # Activate notifications for EDA
