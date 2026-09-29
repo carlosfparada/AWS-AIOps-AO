@@ -32,9 +32,9 @@
             pretty: true
         - run_job_template:
             organization: "Default"
-            name: "AWS AIOps AO: Lightspeed (Insights)"
+            name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
             labels:
-              - "AWS AIOps AO Lightspeed (Insights)"
+              - "AWS AIOps AO Lightspeed (Insights) Forwarder"
             job_args:
               extra_vars:
                 webhook_path: "aiops-cve-rhel"
@@ -59,9 +59,9 @@
             pretty: true
         - run_job_template:
             organization: "Default"
-            name: "AWS AIOps AO: Lightspeed (Insights)"
+            name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
             labels:
-              - "AWS AIOps AO Lightspeed (Insights)"
+              - "AWS AIOps AO Lightspeed (Insights) Forwarder"
             job_args:
               extra_vars:
                 webhook_path: "aiops-cve-rhel"
