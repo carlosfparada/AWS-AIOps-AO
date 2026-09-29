@@ -9,7 +9,7 @@
       name: utils_hosts_aws
 
 
-- name: Generate/Emulate new CVE event (Mitigation)
+- name: Generate/Emulate new CVE event (Remediation)
   hosts: aap
   gather_facts: no
   vars_files: vars/main.yml
@@ -38,7 +38,7 @@
                     "known_exploit": true,
                     "has_rule": false,
                     "publish_date": "2026-04-22T00:00:00+00:00",
-                    "demo_has_remediation": false
+                    "demo_has_remediation": true
                   }
                 }
               ],
@@ -86,7 +86,7 @@
 
     - name: Create a CVE Event
       ansible.builtin.uri:
-        url: "http://{{ inventory_hostname }}:{{ eda_port }}"
+        url: "http://{{ inventory_hostname }}:10001"
         method: POST
         body: "{{ cve_event_body }}"
         status_code: 200
@@ -98,6 +98,7 @@
       delegate_to: localhost
 
     # SAMPLE any-cve-known-exploit
+
     # {
     #   "bundle": "rhel",
     #   "application": "vulnerability",
