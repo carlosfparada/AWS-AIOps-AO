@@ -1,7 +1,7 @@
 ---
 
 # example_rulebook.yaml
-- name: Red Hat Insights (Lightspeed) - Automation Orchestrator (AO) forwarder
+- name: Red Hat Insights (Lightspeed) - Automation Orchestrator (AO) Forwarder
   hosts: localhost
   sources:
     # console.redhat.com -> Settings -> Integrations -> Reporting & automation -> Event-Driven Ansible
@@ -32,9 +32,9 @@
             pretty: true
         - run_job_template:
             organization: "Default"
-            name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
+            name: "AWS AIOps AO: Lightspeed (Insights)"
             labels:
-              - "AWS AIOps AO Lightspeed (Insights) Forwarder"
+              - "AWS AIOps AO Lightspeed (Insights)"
             job_args:
               extra_vars:
                 webhook_path: "aiops-cve-rhel"
@@ -59,9 +59,9 @@
             pretty: true
         - run_job_template:
             organization: "Default"
-            name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
+            name: "AWS AIOps AO: Lightspeed (Insights)"
             labels:
-              - "AWS AIOps AO Lightspeed (Insights) Forwarder"
+              - "AWS AIOps AO Lightspeed (Insights)"
             job_args:
               extra_vars:
                 webhook_path: "aiops-cve-rhel"
