@@ -32,9 +32,9 @@
             pretty: true
         - run_job_template:
             organization: "Default"
-            name: "AWS AIOps: AO Forwarder - New CVE"
+            name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
             labels:
-              - EDA Lightspeed AO Forwarder - New CVE
+              - "AWS AIOps AO Lightspeed (Insights) Forwarder"
             job_args:
               extra_vars:
                 webhook_path: "aiops-cve-rhel"
@@ -59,6 +59,10 @@
             pretty: true
         - run_job_template:
             organization: "Default"
-            name: "AWS AIOps: AO Forwarder - New System"
+            name: "AWS AIOps AO: Lightspeed (Insights) Forwarder"
             labels:
-              - EDA Lightspeed AO Forwarder - New System
+              - "AWS AIOps AO Lightspeed (Insights) Forwarder"
+            job_args:
+              extra_vars:
+                webhook_path: "aiops-cve-rhel"
+                ansible_eda: "{{ event }}"
