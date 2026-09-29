@@ -86,7 +86,7 @@
       when: affected_systems_id | length > 0
 
     - name: Debug affected_systems message
-      ansible.builtin.set_stats:
+      ansible.builtin.debug:
         msg: "There ARE Systems affected by {{ cve_name }}: {{ affected_systems_fqdn }}"
       when: affected_systems_id | length > 0
 
@@ -97,6 +97,6 @@
       when: affected_systems_id | length == 0
 
     - name: Debug affected_systems message
-      ansible.builtin.set_stats:
+      ansible.builtin.debug:
         msg: "There ARE NO Systems affected by {{ cve_name }}."
       when: affected_systems_id | length == 0
