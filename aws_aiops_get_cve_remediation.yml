@@ -1,0 +1,90 @@
+---
+
+- name: Get CVE Remediation
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars_files: vars/main.yml
+  tasks:
+    - name: Debug Hostvars
+      ansible.builtin.debug:
+        var: hostvars['localhost']
+
+    - name: AIOps Lightspeed action payload
+      ansible.builtin.set_fact:
+        payload: "{{ ansible_eda.event.payload }}"
+
+    - name: Debug Payload
+      ansible.builtin.debug:
+        var: payload
+
+    - name: Debug {{ payload.events[0].payload.reported_cve }} Name
+      ansible.builtin.debug:
+        msg: "CVE Name: {{ cve_name }}"
+
+    - name: Get access token using Service Account Client ID and Secret
+      ansible.builtin.uri:
+        url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        method: POST
+        body_format: "form-urlencoded"
+        body:
+          grant_type: client_credentials
+          client_id: "{{ lightspeed_client_id }}"
+          client_secret: "{{ lightspeed_client_secret }}"
+        status_code: 200
+      register: sso_response
+
+    - name: Request Red Hat Lightspeed to generate a Remediation Plan
+      ansible.builtin.uri:
+        url: https://console.redhat.com/api/remediations/v1/remediations
+        method: POST
+        headers:
+          Authorization: "Bearer {{ sso_response.json.access_token }}"
+        status_code: 201
+        body_format: json
+        body:
+          name: "Remediation_{{ cve_name }}_{{ ansible_date_time.iso8601 }}"
+          auto_reboot: true
+          add:
+            issues:
+              - id: "vulnerabilities:{{ cve_name }}"
+                systems: "{{ affected_systems_id }}"
+      register: remediation_response
+
+    - name: Download the Remediation Playbook (.yml)
+      ansible.builtin.uri:
+        url: "https://console.redhat.com/api/remediations/v1/remediations/{{ remediation_response.json.id }}/playbook"
+        method: GET
+        headers:
+          Authorization: "Bearer {{ sso_response.json.access_token }}"
+        status_code: 200
+        return_content: true
+        dest: "./insights_remediation_{{ cve_name }}.yml"     
+      register: downloaded_playbook_response
+
+    - name: Set fact generated Playbook content
+      ansible.builtin.set_fact:
+        downloaded_playbook: "{{ downloaded_playbook_response.content }}"
+
+    - name: Fetch Host Inventory from Red Hat Lightspeed
+      ansible.builtin.uri:
+        url: https://console.redhat.com/api/inventory/v1/hosts
+        method: GET
+        headers:
+          Authorization: "Bearer {{ sso_response.json.access_token }}"
+        status_code: 200
+      register: inventory_response
+
+    - name: Replace fqdn by display_name on affected systems to match ansible Inventory
+      ansible.builtin.set_fact:
+        downloaded_playbook: "{{ downloaded_playbook | regex_replace((item.fqdn), (item.display_name), multiline=True) }}"
+      loop: "{{ inventory_response.json.results }}"
+
+    - name: Debug dowloaded Playbook
+      ansible.builtin.debug:
+        var: downloaded_playbook
+
+    - name: Set stats generated Playbook
+      ansible.builtin.set_stats:
+        data:
+          downloaded_playbook: "{{ downloaded_playbook }}"

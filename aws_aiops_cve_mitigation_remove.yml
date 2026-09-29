@@ -1,0 +1,23 @@
+---
+
+- name: Remove CVE Mitigation
+  hosts: rhel
+  gather_facts: no
+  vars_files: vars/main.yml
+  tasks:
+    - name: Run grubby to remove CVE Mitigation from {{ inventory_hostname }}
+      ansible.builtin.command: 
+        cmd: sudo grubby --update-kernel=ALL --remove-args="initcall_blacklist=algif_aead_init"
+      ignore_errors: true
+
+    - name: Reboot {{ inventory_hostname }} 
+      ansible.builtin.reboot:
+        reboot_timeout: 360
+      become: true
+
+    - name: Wait until RHEL {{ inventory_hostname }} boots up 
+      wait_for:
+        port: 22
+        state: started
+        timeout: 360
+        delay: 10

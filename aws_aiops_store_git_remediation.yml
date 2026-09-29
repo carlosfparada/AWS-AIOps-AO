@@ -1,0 +1,40 @@
+---
+
+- name: Store Code in Git (Remediation)
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files: vars/main.yml
+  tasks:
+    - name: Retrieve a repository (Remediation)
+      ansible.scm.git_retrieve:
+        origin:
+          url: "{{ github_url }}"
+        upstream:
+          url: "{{ github_url }}"
+        branch: 
+          name: "{{ github_branch }}"
+          duplicate_detection: false
+      register: repository
+
+    - name: Debug repository data
+      debug: 
+        var: repository
+
+    - name: Copy playbook content to the GIT folder (Remediation)
+      ansible.builtin.copy:
+        content: "{{ downloaded_playbook }}"
+        dest: "{{ repository['path'] }}/playbook_remediation.yml"
+        force: true
+        mode: '0644'
+
+    - name: Publish the changes (Remediation)
+      ansible.scm.git_publish:
+        commit:
+          message: Adding new playbook_remediation.yml for {{ cve_name }}"
+        path: "{{ repository['path'] }}"
+        user:
+          name: "{{ github_user }}"
+          email: "{{ github_email }}"
+        token: "{{ github_token }}"
+

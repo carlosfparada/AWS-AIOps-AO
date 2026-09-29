@@ -1,0 +1,40 @@
+---
+
+# - name: Get nodes from Inventory and add to Groups
+#   hosts: localhost
+#   connection: local
+#   gather_facts: no
+#   tasks:
+#   - include_role: 
+#       name: utils_hosts_aws
+
+
+- name: Setup NEW RHELs with Lightspeed
+  hosts: rhel
+  become: true
+  tasks:
+    - debug:
+        # var: hostvars[inventory_hostname].tags.Name
+        var: inventory_hostname
+
+    - name: Register using Org ID and Activation Key
+      community.general.redhat_subscription:
+        state: present
+        org_id: "{{ org_id }}"
+        activationkey: "{{ activation_key }}"
+        force_register: true
+      become: true
+
+    - name: Register with Insights
+      redhatinsights.insights.insights_register:
+        state: present
+        display_name: "{{ inventory_hostname }}"
+        force_reregister: true
+      become: true
+
+    - name: Copy CVE exploit to RHEL /home/ec2-user/
+      ansible.builtin.copy:
+        src: "scripts/copy_fail_exploit_CVE‑2026‑31431.py"
+        dest: "/home/ec2-user/copy_fail_exploit_CVE‑2026‑31431.py"
+        force: true
+        mode: '0755'

@@ -1,0 +1,64 @@
+---
+
+# example_rulebook.yaml
+- name: Red Hat Insights (Lightspeed) - Automation Orchestrator (AO) forwarder
+  hosts: localhost
+  sources:
+    # console.redhat.com -> Settings -> Integrations -> Reporting & automation -> Event-Driven Ansible
+    - redhatinsights.eda.insights:
+        host: 0.0.0.0
+        port: 10001
+        # token:    # secret token.
+        # certfile: # (optional) path to a certificate file to enable TLS support
+        # keyfile:  # (optional) path to a key file to be used together with certfile
+        # password: # (optional) path to a key file to be used together with certfile
+  rules:
+    - name: Match any new known exploit vulnerability events
+    # Activate notifications for EDA
+    # https://console.redhat.com/settings/notifications/configure-events?bundle=rhel&tab=configuration
+    # Global-level
+      # "new-recommendation",
+      # "any-cve-known-exploit",
+      # "new-cve-cvss",
+      # "new-cve-severity",
+      # "new-cve-security-rule"
+      condition: |-
+        event.payload.application == "vulnerability"
+        and event.payload.event_type in [
+          "any-cve-known-exploit"
+        ]
+      actions:
+        - print_event:
+            pretty: true
+        - run_job_template:
+            organization: "Default"
+            name: "AWS AIOps: AO Forwarder - New CVE"
+            labels:
+              - EDA Lightspeed AO Forwarder - New CVE
+            job_args:
+              extra_vars:
+                webhook_path: "aiops-cve-rhel"
+                ansible_eda: "{{ event }}"
+
+    - name: Match all System known exploit vulnerability events
+    # Activate notifications for EDA
+    # https://console.redhat.com/settings/notifications/configure-events?bundle=rhel&tab=configuration
+    # System-level
+      # system-cve-known-exploit
+      # system-cve-severity
+      # system-cve-security-rule
+      # system-cve-cvss
+      # system-cve-all
+      condition: |-
+        event.payload.application == "vulnerability"
+        and event.payload.event_type in [
+          "system-cve-known-exploit"
+        ]
+      actions:
+        - print_event:
+            pretty: true
+        - run_job_template:
+            organization: "Default"
+            name: "AWS AIOps: AO Forwarder - New System"
+            labels:
+              - EDA Lightspeed AO Forwarder - New System

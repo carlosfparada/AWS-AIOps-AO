@@ -1,0 +1,48 @@
+---
+
+- name: Store Code in Git (Mitigation)
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files: vars/main.yml
+  tasks:
+    - name: Retrieve a repository (Mitigation)
+      ansible.scm.git_retrieve:
+        origin:
+          url: "{{ github_url }}"
+        upstream:
+          url: "{{ github_url }}"
+        branch: 
+          name: "{{ github_branch }}"
+          duplicate_detection: false
+      register: repository
+
+    - name: Debug repository data (Mitigation)
+      debug: 
+        var: repository
+
+    # - name: Copy playbook content to the GIT folder (Mitigation)
+    #   ansible.builtin.copy:
+    #     content: "{{ generated_playbook }}"
+    #     dest: "{{ repository['path'] }}/playbook_mitigation.yml"
+    #     force: true
+    #     mode: '0644'
+
+    - name: Copy playbook content to the GIT folder (Mitigation)
+      ansible.builtin.copy:
+        src: "{{ repository['path'] }}/playbook.yml"
+        dest: "{{ repository['path'] }}/playbook_mitigation.yml"
+        remote_src: true
+        force: true
+        mode: '0644'
+        
+    - name: Publish the changes
+      ansible.scm.git_publish:
+        commit:
+          message: Adding new playbook_mitigation.yml for {{ cve_name }}"
+        path: "{{ repository['path'] }}"
+        user:
+          name: "{{ github_user }}"
+          email: "{{ github_email }}"
+        token: "{{ github_token }}"
+

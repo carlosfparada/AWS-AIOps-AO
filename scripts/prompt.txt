@@ -1,0 +1,89 @@
+    Write a simple ansible playbook to mitigate CVE-2026-31431.
+
+    The playbbok MUST only cover the RHEL OS for target nodes.
+
+    DON'T include tasks to perform backups, checks or validations.
+
+    DON'T update any software package or kernel binary, DO ONLY mitigation
+
+    based on kernel parameters or similar mitigation measures.
+
+    You SHOULD reboot the systems to apply changes if needed.
+
+    You MUST use the following string as ansible play targets (hosts): 
+
+    'ec2-98-93-112-42.compute-1.amazonaws.com,ec2-98-92-4-79.compute-1.amazonaws.com'.
+
+    The CVE has the following details:
+
+    description: A flaw was found in the Linux kernel's algif_aead cryptographic
+    algorithm interface. An incorrect in-place operation causes source and
+    destination data mappings to differ during cryptographic processing. A
+    low-privileged local attacker can exploit this flaw to corrupt the contents
+    of sensitive system files and escalate to root privileges.
+
+    summary: kernel: crypto: algif_aead - Revert to operating out-of-place
+
+    other: This issue is classified as Important, rather than Critical severity,
+    because exploitation requires local access to the system. A low-privileged
+    local attacker can exploit this flaw in the Linux kernel's cryptographic
+    interface to gain root privileges by overwriting sensitive system files.
+    Exploitation does not require user interaction, potentially resulting in
+    full compromise of confidentiality, integrity, and availability.
+
+    general: The CVSS score(s) listed for this vulnerability do not reflect the
+    associated product's status, and are included for informational purposes to
+    better understand the severity of this vulnerability.
+
+
+    The Red Hat Security Bulletin containt mitigation details:
+
+    Executive Summary: ['\n<p>A vulnerability, known as "Copy Fail", has been
+    identified in the Linux kernel\'s cryptographic interface. A user with a
+    local account could trigger the flaw to gain root privileges, such as that
+    of a system administrator.</p>\n<p>This issue has been assigned <a
+    href="https://access.redhat.com/security/cve/CVE-2026-31431">CVE-2026-31431</a>
+    and has a severity impact of <a
+    href="https://access.redhat.com/security/updates/classification">Important</a>.
+    Configuration settings can be used to further mitigate the
+    impact.</p>\n<p>Even though the severity is less than Critical, Red Hat has
+    expedited the release of fixes. All fixes <a
+    href="https://access.redhat.com/security/cve/cve-2026-31431#cve-affected-packages">are
+    now available</a>. For the most current information, including a complete
+    list of impacted Red Hat products, please refer to the vulnerability\'s <a
+    href="https://access.redhat.com/security/cve/CVE-2026-31431">CVE
+    page</a>.</p>\n']
+
+    Mitigations: ['\n<p>Any hardening measures that limit local access help
+    reduce the risk of exploitation. Examples include disabling SSH, ensuring
+    SELinux is in enforcing mode, using the default Security Context Constraints
+    (SCC), running workloads as non-root, and restricting <code>oc debug</code>
+    access to trusted cluster administrators. This list is not exhaustive, and
+    the applicability of each measure should be evaluated in the context of your
+    operational requirements and security policies. Additionally, disabling any
+    single access method does not eliminate all other means by which a user
+    could gain local access.</p>\n<h3>Overall Guidance</h3>\n<p>This advice is
+    applicable to most Red Hat products.</p>\n<p>Warning: there may be
+    performance impacts for modifying functionality that uses kernel
+    cryptographic functions. While the affected module cannot be blocklisted due
+    to being built into the kernel, the affected functions themselves can be
+    blocked using the following boot
+    arguments:</p>\n<pre><code>initcall_blacklist=algif_aead_init\n</code></pre><p>Alternatively,
+    the af_alg interface itself can be
+    blocked:</p>\n<pre><code>initcall_blacklist=af_alg_init\n</code></pre><p>As
+    a further alternative, the affected algorithm can be
+    blocked:</p>\n<pre><code>initcall_blacklist=crypto_authenc_esn_module_init\n</code></pre><h3>Product
+    Specific Mitigation Steps</h3>\n<ul>\n<li><a
+    href="https://access.redhat.com/solutions/7141931">Red Hat Enterprise
+    Linux</a></li>\n<li><a
+    href="https://access.redhat.com/solutions/7141979">OpenShift
+    4</a></li>\n<li><a
+    href="https://access.redhat.com/solutions/7142136">Managed OpenShift (ROSA
+    Classic / ROSA HCP / ARO / OSD)</a></li>\n<li><a
+    href="https://access.redhat.com/articles/7141989">ROSA Classic and OpenShift
+    Dedicated CCS</a></li>\n<li><a
+    href="https://access.redhat.com/solutions/7141996">ROSA Hosted Control
+    Planes</a></li>\n<li><a
+    href="https://access.redhat.com/solutions/7141990">ARO</a></li>\n<li><a
+    href="https://access.redhat.com/solutions/7142032">Advanced Cluster
+    Management Governance Policy</a></li>\n</ul>\n']
