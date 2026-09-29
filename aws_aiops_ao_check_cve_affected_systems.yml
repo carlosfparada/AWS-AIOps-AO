@@ -79,9 +79,24 @@
         data:
           affected_systems_fqdn: "{{ affected_systems_fqdn }}"
 
-    - name: Check whether any System is Affected
-      ansible.builtin.assert:
-        that:
-          - affected_systems_id | length > 0
-        fail_msg: "There ARE NO Systems affected by {{ cve_name }}. Aborting..."
-        success_msg: "There ARE Systems affected by {{ cve_name }}: Continue {{ affected_systems_fqdn }}"
+    - name: Set stats bool affected_systems
+      ansible.builtin.set_stats:
+        data:
+          affected_systems: true
+      when: affected_systems_id | length > 0
+
+    - name: Debug affected_systems message
+      ansible.builtin.set_stats:
+        msg: "There ARE Systems affected by {{ cve_name }}: {{ affected_systems_fqdn }}"
+      when: affected_systems_id | length > 0
+
+    - name: Set stats bool affected_systems
+      ansible.builtin.set_stats:
+        data:
+          affected_systems: false
+      when: affected_systems_id | length == 0
+
+    - name: Debug affected_systems message
+      ansible.builtin.set_stats:
+        msg: "There ARE NO Systems affected by {{ cve_name }}."
+      when: affected_systems_id | length == 0
