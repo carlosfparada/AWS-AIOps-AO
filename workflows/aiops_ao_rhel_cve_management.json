@@ -1,0 +1,220 @@
+{
+  "schema_version": "2.0.0",
+  "name": "AIOps: RHEL CVE Management",
+  "description": "New workflow",
+  "triggers": [
+    {
+      "id": "activity_0e49aa54_93b1_4ef0_8cd3_93a9e8bf1b74",
+      "type": "eda_trigger",
+      "name": "Trigger: New CVE",
+      "parameters": {
+        "webhook_path": "aiops-cve-rhel",
+        "authorized_service_account_ids": [
+          "bda0fa5e-9f67-4c53-a709-fd48d054e621"
+        ]
+      },
+      "position": {
+        "x": -1072,
+        "y": -43
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "activity_3b503a19_0b76_4b71_8f29_c6d9ad537f4b",
+      "type": "aap_job_template",
+      "name": "Get CVE Remediation",
+      "parameters": {
+        "diff_mode": false,
+        "extra_vars": {
+          "cve_name": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.cve_name}",
+          "ansible_eda": "${trigger}",
+          "affected_systems": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems}",
+          "affected_systems_id": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems_id}",
+          "affected_systems_fqdn": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems_fqdn}"
+        },
+        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
+        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
+        "job_template_id": 181,
+        "job_template_name": "AWS AIOps AO: Get CVE Remediation",
+        "organization_name": "Default"
+      },
+      "position": {
+        "x": 492.89529287300445,
+        "y": -102.22639166080384
+      }
+    },
+    {
+      "id": "activity_871d10dc_c316_4d7c_a411_939a0436dbff",
+      "type": "aap_job_template",
+      "name": "Check CVE Remediations",
+      "parameters": {
+        "diff_mode": false,
+        "extra_vars": {
+          "cve_name": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.cve_name}",
+          "ansible_eda": "${trigger}",
+          "affected_systems": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems}",
+          "affected_systems_id": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems_id}",
+          "affected_systems_fqdn": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems_fqdn}"
+        },
+        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
+        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
+        "job_template_id": 177,
+        "job_template_name": "AWS AIOps AO: Check CVE Remediations",
+        "organization_name": "Default"
+      },
+      "position": {
+        "x": -185,
+        "y": -313.703125
+      }
+    },
+    {
+      "id": "activity_8999ee63_6966_48b2_8528_64d529d47071",
+      "type": "aap_job_template",
+      "name": "Store Remediation on GIT",
+      "parameters": {
+        "diff_mode": false,
+        "extra_vars": {
+          "cve_name": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.cve_name}",
+          "ansible_eda": "${trigger}",
+          "downloaded_playbook": "${activity_3b503a19_0b76_4b71_8f29_c6d9ad537f4b.artifacts.downloaded_playbook}"
+        },
+        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
+        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
+        "job_template_id": 182,
+        "job_template_name": "AWS AIOps AO: Store Git Remediation",
+        "organization_name": "Default"
+      },
+      "position": {
+        "x": 783.8952928730045,
+        "y": -101.74409962896127
+      }
+    },
+    {
+      "id": "activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6",
+      "type": "aap_job_template",
+      "name": "Check CVE Affected System",
+      "parameters": {
+        "diff_mode": false,
+        "extra_vars": {
+          "ansible_eda": "${trigger}"
+        },
+        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
+        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
+        "job_template_id": 176,
+        "job_template_name": "AWS AIOps AO: Check CVE Affected Systems",
+        "organization_name": "Default"
+      },
+      "position": {
+        "x": -798.1614546815744,
+        "y": -113.6015625
+      }
+    },
+    {
+      "id": "activity_f5ed2d0f_7935_43c4_92ec_ace036b49bba",
+      "type": "aap_job_template",
+      "name": "Run CVE Remediation",
+      "parameters": {
+        "diff_mode": false,
+        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
+        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
+        "job_template_id": 183,
+        "job_template_name": "AWS AIOps AO: Run Remediation",
+        "organization_name": "Default"
+      },
+      "position": {
+        "x": 1073.8952928730046,
+        "y": -101.85347462896127
+      }
+    },
+    {
+      "id": "activity_407b95d8_9d68_4966_a202_fc5bdf716f12",
+      "type": "aap_job_template",
+      "name": "Run CVE Mitigation",
+      "parameters": {
+        "diff_mode": false,
+        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
+        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
+        "job_template_id": 184,
+        "job_template_name": "AWS AIOps AO: Remove Mitigation",
+        "organization_name": "Default"
+      },
+      "position": {
+        "x": 1363.263039645643,
+        "y": -101.59510285632285
+      }
+    },
+    {
+      "id": "logic_1790702788773_qnvw0ipxicys",
+      "type": "condition",
+      "name": "Any Affected Systems?",
+      "parameters": {
+        "condition": "${activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6.artifacts.affected_systems} == 'true'"
+      },
+      "position": {
+        "x": -489.413018277102,
+        "y": -206.73619828184255
+      }
+    },
+    {
+      "id": "logic_1790764465904_zr2rtglnl97n",
+      "type": "switch",
+      "name": "CVE Handling",
+      "parameters": {
+        "cases": [
+          {
+            "port": "case_0",
+            "label": "NO Remediations (AI-based Mitigation)",
+            "condition": "${activity_871d10dc_c316_4d7c_a411_939a0436dbff.artifacts.next_path} == 'mitigation'"
+          },
+          {
+            "port": "case_1",
+            "label": "Remediations (LS-based Remediation)",
+            "condition": "${activity_871d10dc_c316_4d7c_a411_939a0436dbff.artifacts.next_path} == 'remediation'"
+          }
+        ],
+        "default_port": "default"
+      },
+      "position": {
+        "x": 114.92786270301062,
+        "y": -343.9076372557114
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "activity_0e49aa54_93b1_4ef0_8cd3_93a9e8bf1b74",
+      "to": "activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6"
+    },
+    {
+      "from": "activity_e08d30de_2ad6_4ab2_8f35_2bbefb292bc6",
+      "to": "logic_1790702788773_qnvw0ipxicys"
+    },
+    {
+      "from": "logic_1790702788773_qnvw0ipxicys",
+      "to": "activity_871d10dc_c316_4d7c_a411_939a0436dbff",
+      "from_port": "true"
+    },
+    {
+      "from": "activity_871d10dc_c316_4d7c_a411_939a0436dbff",
+      "to": "logic_1790764465904_zr2rtglnl97n"
+    },
+    {
+      "from": "logic_1790764465904_zr2rtglnl97n",
+      "to": "activity_3b503a19_0b76_4b71_8f29_c6d9ad537f4b",
+      "from_port": "case_1"
+    },
+    {
+      "from": "activity_3b503a19_0b76_4b71_8f29_c6d9ad537f4b",
+      "to": "activity_8999ee63_6966_48b2_8528_64d529d47071"
+    },
+    {
+      "from": "activity_8999ee63_6966_48b2_8528_64d529d47071",
+      "to": "activity_f5ed2d0f_7935_43c4_92ec_ace036b49bba"
+    },
+    {
+      "from": "activity_f5ed2d0f_7935_43c4_92ec_ace036b49bba",
+      "to": "activity_407b95d8_9d68_4966_a202_fc5bdf716f12"
+    }
+  ]
+}
