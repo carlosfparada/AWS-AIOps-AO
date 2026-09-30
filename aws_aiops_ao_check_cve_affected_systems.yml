@@ -82,7 +82,7 @@
     - name: Set stats bool affected_systems
       ansible.builtin.set_stats:
         data:
-          affected_systems: true
+          affected_systems: "true"
       when: affected_systems_id | length > 0
 
     - name: Debug affected_systems message
@@ -93,7 +93,7 @@
     - name: Set stats bool affected_systems
       ansible.builtin.set_stats:
         data:
-          affected_systems: false
+          affected_systems: "false"
       when: affected_systems_id | length == 0
 
     - name: Debug affected_systems message
