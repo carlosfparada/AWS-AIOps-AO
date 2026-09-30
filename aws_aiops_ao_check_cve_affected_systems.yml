@@ -79,7 +79,7 @@
         data:
           affected_systems_fqdn: "{{ affected_systems_fqdn }}"
 
-    - name: Set stats bool affected_systems
+    - name: Set stats affected_systems
       ansible.builtin.set_stats:
         data:
           affected_systems: "true"
@@ -90,7 +90,7 @@
         msg: "There ARE Systems affected by {{ cve_name }}: {{ affected_systems_fqdn }}"
       when: affected_systems_id | length > 0
 
-    - name: Set stats bool affected_systems
+    - name: Set stats affected_systems
       ansible.builtin.set_stats:
         data:
           affected_systems: "false"

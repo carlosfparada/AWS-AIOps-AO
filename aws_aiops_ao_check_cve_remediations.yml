@@ -43,13 +43,24 @@
       ansible.builtin.debug:
         var: cve_response    
 
-    - name: Check whether there are Remediations available on Lightspeed for {{ cve_name }}
-      ansible.builtin.assert:
-        that:
-        # real check
-          # - (cve_response.json.data.attributes.rules | length > 0) or (cve_response.json.data.attributes.advisories_list | default([]) | length > 0)
-        # demo check
-          - payload.events[0].payload.demo_has_remediation == true
-        fail_msg: "There ARE NO Remediations available on Lightspeed. Going to use AI-based Mitigation"
-        success_msg: "There ARE Remediations available on Lightspeed. Security Rules {{ cve_response.json.data.attributes.rules }}, Advisories: {{ cve_response.json.data.attributes.advisories_list }}. Going for Remediations."
-        
+    - name: Set stats next_path
+      ansible.builtin.set_stats:
+        data:
+          next_path: "remediation"
+      when: payload.events[0].payload.demo_has_remediation == true
+
+    - name: Debug next_path message
+      ansible.builtin.debug:
+        msg: "There ARE Remediations available on Lightspeed. Security Rules {{ cve_response.json.data.attributes.rules }}, Advisories: {{ cve_response.json.data.attributes.advisories_list }}."
+      when: payload.events[0].payload.demo_has_remediation == true
+
+    - name: Set stats next_path
+      ansible.builtin.set_stats:
+        data:
+          next_path: "mitigation"
+      when: payload.events[0].payload.demo_has_remediation == false
+
+    - name: Debug next_path message
+      ansible.builtin.debug:
+        msg: "There ARE NO Remediations available on Lightspeed."
+      when: payload.events[0].payload.demo_has_remediation == false
