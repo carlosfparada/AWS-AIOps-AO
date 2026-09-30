@@ -1,6 +1,6 @@
 ---
 
-- name: AWS AIOps Deploy
+- name: AWS AIOps AO Deploy
   hosts: localhost
   connection: local
   gather_facts: no
@@ -8,4 +8,4 @@
     - main.yml
   tasks:
     - include_role: 
-        name: aws_deploy_aiops
+        name: aws_deploy_aiops_ao
