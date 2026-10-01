@@ -16,4 +16,4 @@
         update_project: true
         wait: true  
   roles:
-    - {role: infra.aap_configuration.controller_projects, when: controller_projects is defined}
+    - {role: infra.aap_configuration.controller_project_update, when: controller_projects is defined}
