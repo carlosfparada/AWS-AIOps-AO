@@ -14,7 +14,7 @@
         description: "AWS AIOps AO Remediation Project"
         organization: "Default"
         scm_type: git
-        scm_url: "{{ project_url }}"
+        scm_url: "{{ github_url }}"
         update_project: true
         wait: true  
   roles:
