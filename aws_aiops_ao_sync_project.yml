@@ -13,6 +13,7 @@
       - name: "AWS AIOps AO Remediation Project"
         description: "AWS AIOps AO Remediation Project"
         organization: "Default"
+        scm_type: git
         update_project: true
         wait: true  
   roles:
