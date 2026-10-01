@@ -4,7 +4,6 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars_files: ../vars/main.yml
   vars:
     aap_hostname: "https://{{ aap_fqdn }}"
     aap_validate_certs: true
