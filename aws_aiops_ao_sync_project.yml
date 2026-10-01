@@ -1,0 +1,20 @@
+---
+
+- name: AWS AIOps AO Sync Remediation Project
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files: ../vars/main.yml
+  vars:
+    aap_hostname: "https://{{ aap_fqdn }}"
+    aap_validate_certs: true
+    aap_username: admin
+    aap_password: "{{ admin_password }}"
+    controller_projects:
+      - name: "AWS AIOps AO Remediation Project"
+        description: "AWS AIOps AO Remediation Project"
+        organization: "Default"
+        update_project: true
+        wait: true  
+  roles:
+    - {role: infra.aap_configuration.controller_projects, when: controller_projects is defined}
