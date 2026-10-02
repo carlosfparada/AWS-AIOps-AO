@@ -47,20 +47,24 @@
       ansible.builtin.set_stats:
         data:
           next_path: "remediation"
-      when: payload.events[0].payload.demo_has_remediation == true
+      when: payload.events[0].payload.demo_has_remediation is not defined or 
+            payload.events[0].payload.demo_has_remediation == true
 
     - name: Debug next_path message
       ansible.builtin.debug:
         msg: "There ARE Remediations available on Lightspeed. Security Rules {{ cve_response.json.data.attributes.rules }}, Advisories: {{ cve_response.json.data.attributes.advisories_list }}."
-      when: payload.events[0].payload.demo_has_remediation == true
+      when: payload.events[0].payload.demo_has_remediation is not defined or 
+            payload.events[0].payload.demo_has_remediation == true
 
     - name: Set stats next_path
       ansible.builtin.set_stats:
         data:
           next_path: "mitigation"
-      when: payload.events[0].payload.demo_has_remediation == false
+      when: payload.events[0].payload.demo_has_remediation is defined and 
+            payload.events[0].payload.demo_has_remediation == false
 
     - name: Debug next_path message
       ansible.builtin.debug:
         msg: "There ARE NO Remediations available on Lightspeed."
-      when: payload.events[0].payload.demo_has_remediation == false
+      when: payload.events[0].payload.demo_has_remediation is defined and 
+            payload.events[0].payload.demo_has_remediation == false
