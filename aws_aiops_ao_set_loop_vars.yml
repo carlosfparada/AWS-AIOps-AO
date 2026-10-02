@@ -10,7 +10,7 @@
 
     - name: Set stats for events
       ansible.builtin.set_fact:
-        events: "{{ users | map('combine', { 'demo_has_remediation': true}) | list }}"
+        events: "{{ events | map('combine', { 'demo_has_remediation': true}) | list }}"
       loop: "{{ events }}"
 
 
