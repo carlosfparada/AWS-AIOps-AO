@@ -9,8 +9,9 @@
         events: "{{ ansible_eda.event.payload.events }}"
 
     - name: Set stats for events
-      ansible.builtin.set_fact:
-        events: "{{ events | map('combine', { 'demo_has_remediation': true}) | list }}"
+      ansible.builtin.set_stats:
+        data:
+          events: "{{ events | map('combine', { 'demo_has_remediation': true}) | list }}"
       loop: "{{ events }}"
 
 
