@@ -17,7 +17,7 @@
     - name: Set CVE
       set_fact: 
         cve_event_body: |
-            {
+            [{
               "bundle": "rhel",
               "application": "vulnerability",
               "version": "v1.1.0",
@@ -49,7 +49,7 @@
                 }
               ],
               "org_id": "15801425"
-            }
+            }]
         # {
         #   "bundle": "rhel",
         #   "application": "vulnerability",
