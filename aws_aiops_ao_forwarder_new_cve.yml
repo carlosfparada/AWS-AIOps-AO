@@ -22,7 +22,7 @@
 
     - name: Post event payload to Event-Driven Ansible forwarder endpoint
       ansible.builtin.uri:
-        url: "{{ ao_webhook_url }}/api/v1/webhooks/eda/{{ ao_webhook_path }}"
+        url: "{{ ao_webhook_url }}/api/v1/webhooks/eda/{{ ao_webhook_path_new_cve }}"
         method: POST
         body_format: json
         headers:
