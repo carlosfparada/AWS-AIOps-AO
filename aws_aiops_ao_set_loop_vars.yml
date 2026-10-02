@@ -4,43 +4,8 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: AIOps Lightspeed action payload
-      ansible.builtin.set_fact:
-        events: "{{ ansible_eda.event.payload.events }}"
-
-    - name: Set stats for events
+    - name: Set stats for CVE events
       ansible.builtin.set_stats:
         data:
-          events: "{{ events | map('combine', { 'demo_has_remediation': true}) | list }}"
-          
+          events: "{{ ansible_eda.event.payload.events }}"
 
-    # - name: Set CVE List
-    #   set_stats: 
-    #     data:
-    #       cve_list: |
-    #         [
-    #           "events": [
-    #             {
-    #               "payload": {
-    #                 "reported_cve": "CVE-2026-31431",
-    #                 "cvss_score": 7.8,
-    #                 "impact_id": 5,
-    #                 "known_exploit": true,
-    #                 "has_rule": false,
-    #                 "publish_date": "2026-04-22T00:00:00+00:00",
-    #                 "demo_has_remediation": true
-    #               }
-    #             }
-    #           ],
-    #         }]
-
-    #     extra_vars:
-    #       ansible_eda:
-    #         event:
-    #           payload:
-    #             events: 
-    #               - payload: 
-    #                   reported_cve: "{{ item.payload.reported_cve }}"
-    #                   publish_date: "{{ item.payload.publish_date }}"
-    #                   known_exploit: "{{ item.payload.known_exploit }}"
-    #                   demo_has_remediation: true
