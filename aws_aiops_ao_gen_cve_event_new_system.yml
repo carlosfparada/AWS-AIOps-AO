@@ -14,7 +14,7 @@
   gather_facts: no
   vars_files: vars/main.yml
   tasks:
-    - name: Set CVE
+    - name: Set CVE event body
       set_fact: 
         cve_event_body: |
             {
