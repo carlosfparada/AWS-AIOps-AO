@@ -11,6 +11,7 @@
 
 - name: Unsetup RHELs with Lightspeed
   hosts: rhel
+  gather_facts: no
   become: true
   tasks:
     - debug:
