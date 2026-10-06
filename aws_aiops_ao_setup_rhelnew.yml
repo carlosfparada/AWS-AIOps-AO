@@ -13,7 +13,8 @@
   hosts: rhelnew
   become: true
   tasks:
-    - debug:
+    - name: Debug inventory_hostname
+      debug:
         # var: hostvars[inventory_hostname].tags.Name
         var: inventory_hostname
 
