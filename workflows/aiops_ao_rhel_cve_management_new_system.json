@@ -8,13 +8,70 @@
       "type": "eda_trigger",
       "name": "Trigger: New System",
       "parameters": {
+        "input_schema": {
+          "type": "object",
+          "required": [
+            "event"
+          ],
+          "properties": {
+            "event": {
+              "type": "object",
+              "required": [
+                "payload"
+              ],
+              "properties": {
+                "meta": {
+                  "type": "object"
+                },
+                "payload": {
+                  "type": "object",
+                  "required": [
+                    "bundle",
+                    "events"
+                  ],
+                  "properties": {
+                    "bundle": {
+                      "type": "string"
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "cve": {
+                            "type": "string"
+                          },
+                          "has_rule": {
+                            "type": "boolean"
+                          },
+                          "impact_id": {
+                            "type": "integer"
+                          },
+                          "report_url": {
+                            "type": "string"
+                          },
+                          "public_date": {
+                            "type": "string"
+                          },
+                          "known_exploit": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "webhook_path": "aiops-cve-rhel-new-system",
         "authorized_service_account_ids": [
           "bda0fa5e-9f67-4c53-a709-fd48d054e621"
         ]
       },
       "position": {
-        "x": -1764.8260901770718,
+        "x": -1463.8260901770718,
         "y": 245.78098964468822
       }
     }
@@ -222,25 +279,6 @@
       }
     },
     {
-      "id": "activity_bed42d25_9758_43b2_b052_f85b1f1a54cd",
-      "type": "aap_job_template",
-      "name": "Set Vars to Loop",
-      "parameters": {
-        "diff_mode": false,
-        "extra_vars": {
-          "ansible_eda": "${trigger}"
-        },
-        "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
-        "integration_id": "40860539-25ec-463f-a11b-9986eab3854a",
-        "job_template_id": 192,
-        "job_template_name": "AWS AIOps AO: Set Loop Vars"
-      },
-      "position": {
-        "x": -1449.8237422403402,
-        "y": 185.3045061948681
-      }
-    },
-    {
       "id": "activity_da82f3bc_2a87_4d06_8eec_5dafd253a5de",
       "type": "approval",
       "name": "Approve Mitigation?",
@@ -357,7 +395,7 @@
       "name": "Loop over (exploitable) CVEs Affecting New System",
       "parameters": {
         "type": "for_each",
-        "items": "${activity_bed42d25_9758_43b2_b052_f85b1f1a54cd.artifacts.events}"
+        "items": "${trigger.event.payload.events}"
       },
       "settings": {},
       "position": {
@@ -375,8 +413,8 @@
       },
       "settings": {},
       "position": {
-        "x": 2431.5138359364064,
-        "y": -79.26735070720137
+        "x": 2429.8971308137016,
+        "y": -88.35661574244614
       }
     }
   ],
@@ -465,10 +503,6 @@
     },
     {
       "from": "activity_0e49aa54_93b1_4ef0_8cd3_93a9e8bf1b74",
-      "to": "activity_bed42d25_9758_43b2_b052_f85b1f1a54cd"
-    },
-    {
-      "from": "activity_bed42d25_9758_43b2_b052_f85b1f1a54cd",
       "to": "logic_1790937469807_1vaig429inprp"
     }
   ]
