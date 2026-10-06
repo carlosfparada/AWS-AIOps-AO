@@ -1,10 +1,10 @@
 ---
 
-- import_playbook: aws_aiops_ao_unsetup.yml
-  ignore_errors: true
+# - import_playbook: aws_aiops_ao_unsetup.yml
+#   ignore_errors: true
 
-- import_playbook: aws_aiops_ao_unsetup_rhelnew.yml
-  ignore_errors: true
+# - import_playbook: aws_aiops_ao_unsetup_rhelnew.yml
+#   ignore_errors: true
 
 - name: AWS AIOps AO Undeploy
   hosts: localhost
