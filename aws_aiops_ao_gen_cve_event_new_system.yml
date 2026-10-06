@@ -1,0 +1,241 @@
+---
+
+- name: Get nodes from Inventory and add to Groups
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+  - include_role: 
+      name: utils_hosts_aws
+
+
+- name: Generate/Emulate new System event
+  hosts: aap
+  gather_facts: no
+  vars_files: vars/main.yml
+  tasks:
+    - name: Set CVE
+      set_fact: 
+        cve_event_body: |
+            {
+              "rule": "Match all System known exploit vulnerability events",
+              "event": {
+                "meta": {
+                  "uuid": "6bb86828-4d93-40fb-b977-280bc8badc2e",
+                  "source": {
+                    "name": "redhatinsights.eda.insights",
+                    "type": "redhatinsights.eda.insights"
+                  },
+                  "headers": {
+                    "Host": "aap.cparada.com:10001",
+                    "User-Agent": "Quarkus REST Client",
+                    "Content-Type": "application/json;charset=utf-8",
+                    "Content-Length": "1387"
+                  },
+                  "endpoint": "",
+                  "received_at": "2026-10-02T10:33:35.939577Z"
+                },
+                "payload": {
+                  "bundle": "rhel",
+                  "events": [
+                    {
+                      "payload": {
+                        "has_rule": false,
+                        "impact_id": 4,
+                        "cvss_score": 7,
+                        "publish_date": "2025-09-05T00:00:00+00:00",
+                        "reported_cve": "CVE-2025-39682",
+                        "known_exploit": true
+                      },
+                      "metadata": {}
+                    },
+                    {
+                      "payload": {
+                        "has_rule": false,
+                        "impact_id": 4,
+                        "cvss_score": 7.3,
+                        "publish_date": "2025-10-13T00:00:00+00:00",
+                        "reported_cve": "CVE-2025-39964",
+                        "known_exploit": true
+                      },
+                      "metadata": {}
+                    },
+                    {
+                      "payload": {
+                        "has_rule": false,
+                        "impact_id": 4,
+                        "cvss_score": 7,
+                        "publish_date": "2025-07-22T00:00:00+00:00",
+                        "reported_cve": "CVE-2025-38352",
+                        "known_exploit": true
+                      },
+                      "metadata": {}
+                    },
+                    {
+                      "payload": {
+                        "has_rule": false,
+                        "impact_id": 5,
+                        "cvss_score": 7.8,
+                        "publish_date": "2026-04-22T00:00:00+00:00",
+                        "reported_cve": "CVE-2026-31431",
+                        "known_exploit": true
+                      },
+                      "metadata": {}
+                    },
+                    {
+                      "payload": {
+                        "has_rule": false,
+                        "impact_id": 5,
+                        "cvss_score": 7.5,
+                        "publish_date": "2026-06-01T12:00:00+00:00",
+                        "reported_cve": "CVE-2026-53266",
+                        "known_exploit": true
+                      },
+                      "metadata": {}
+                    }
+                  ],
+                  "org_id": "15801425",
+                  "source": {
+                    "bundle": {
+                      "display_name": "Red Hat Enterprise Linux"
+                    },
+                    "event_type": {
+                      "display_name": "System vulnerability with known exploit"
+                    },
+                    "application": {
+                      "display_name": "Vulnerability"
+                    }
+                  },
+                  "context": {
+                    "org_id": "15801425",
+                    "display_name": "ec2-100-31-254-25.compute-1.amazonaws.com",
+                    "inventory_id": "c27e7edd-66a7-424a-b01a-c44442f2f43d"
+                  },
+                  "severity": "CRITICAL",
+                  "timestamp": "2026-10-02T10:33:34.881282",
+                  "account_id": null,
+                  "event_type": "system-cve-known-exploit",
+                  "application": "vulnerability"
+                }
+              },
+              "ruleset": "Red Hat Insights (Lightspeed) - Automation Orchestrator (AO) Forwarder"
+            }
+
+    - name: Create a new System Event
+      ansible.builtin.uri:
+        url: "http://{{ inventory_hostname }}:10001"
+        method: POST
+        body: "{{ cve_event_body }}"
+        status_code: 200
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json; indent=4"
+        validate_certs: false
+      delegate_to: localhost
+
+    # SAMPLE system-cve-known-exploit
+
+    # {
+    #   "rule": "Match all System known exploit vulnerability events",
+    #   "event": {
+    #     "meta": {
+    #       "uuid": "6bb86828-4d93-40fb-b977-280bc8badc2e",
+    #       "source": {
+    #         "name": "redhatinsights.eda.insights",
+    #         "type": "redhatinsights.eda.insights"
+    #       },
+    #       "headers": {
+    #         "Host": "aap.cparada.com:10001",
+    #         "User-Agent": "Quarkus REST Client",
+    #         "Content-Type": "application/json;charset=utf-8",
+    #         "Content-Length": "1387"
+    #       },
+    #       "endpoint": "",
+    #       "received_at": "2026-10-02T10:33:35.939577Z"
+    #     },
+    #     "payload": {
+    #       "bundle": "rhel",
+    #       "events": [
+    #         {
+    #           "payload": {
+    #             "has_rule": false,
+    #             "impact_id": 4,
+    #             "cvss_score": 7,
+    #             "publish_date": "2025-09-05T00:00:00+00:00",
+    #             "reported_cve": "CVE-2025-39682",
+    #             "known_exploit": true
+    #           },
+    #           "metadata": {}
+    #         },
+    #         {
+    #           "payload": {
+    #             "has_rule": false,
+    #             "impact_id": 4,
+    #             "cvss_score": 7.3,
+    #             "publish_date": "2025-10-13T00:00:00+00:00",
+    #             "reported_cve": "CVE-2025-39964",
+    #             "known_exploit": true
+    #           },
+    #           "metadata": {}
+    #         },
+    #         {
+    #           "payload": {
+    #             "has_rule": false,
+    #             "impact_id": 4,
+    #             "cvss_score": 7,
+    #             "publish_date": "2025-07-22T00:00:00+00:00",
+    #             "reported_cve": "CVE-2025-38352",
+    #             "known_exploit": true
+    #           },
+    #           "metadata": {}
+    #         },
+    #         {
+    #           "payload": {
+    #             "has_rule": false,
+    #             "impact_id": 5,
+    #             "cvss_score": 7.8,
+    #             "publish_date": "2026-04-22T00:00:00+00:00",
+    #             "reported_cve": "CVE-2026-31431",
+    #             "known_exploit": true
+    #           },
+    #           "metadata": {}
+    #         },
+    #         {
+    #           "payload": {
+    #             "has_rule": false,
+    #             "impact_id": 5,
+    #             "cvss_score": 7.5,
+    #             "publish_date": "2026-06-01T12:00:00+00:00",
+    #             "reported_cve": "CVE-2026-53266",
+    #             "known_exploit": true
+    #           },
+    #           "metadata": {}
+    #         }
+    #       ],
+    #       "org_id": "15801425",
+    #       "source": {
+    #         "bundle": {
+    #           "display_name": "Red Hat Enterprise Linux"
+    #         },
+    #         "event_type": {
+    #           "display_name": "System vulnerability with known exploit"
+    #         },
+    #         "application": {
+    #           "display_name": "Vulnerability"
+    #         }
+    #       },
+    #       "context": {
+    #         "org_id": "15801425",
+    #         "display_name": "ec2-100-31-254-25.compute-1.amazonaws.com",
+    #         "inventory_id": "c27e7edd-66a7-424a-b01a-c44442f2f43d"
+    #       },
+    #       "severity": "CRITICAL",
+    #       "timestamp": "2026-10-02T10:33:34.881282",
+    #       "account_id": null,
+    #       "event_type": "system-cve-known-exploit",
+    #       "application": "vulnerability"
+    #     }
+    #   },
+    #   "ruleset": "Red Hat Insights (Lightspeed) - Automation Orchestrator (AO) Forwarder"
+    # }

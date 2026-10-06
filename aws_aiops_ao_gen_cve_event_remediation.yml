@@ -84,7 +84,7 @@
         #   "org_id": "15801425"
         # }
 
-    - name: Create a CVE Event
+    - name: Create a new CVE Event (Remediation)
       ansible.builtin.uri:
         url: "http://{{ inventory_hostname }}:10001"
         method: POST
