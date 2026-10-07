@@ -21,7 +21,7 @@
               "rule": "Match all System known exploit vulnerability events",
               "event": {
                 "meta": {
-                  "uuid": "6bb86828-4d93-40fb-b977-280bc8badc2e",
+                  "uuid": "8dedd149-58f5-4824-a229-455117bdd277",
                   "source": {
                     "name": "redhatinsights.eda.insights",
                     "type": "redhatinsights.eda.insights"
@@ -30,10 +30,10 @@
                     "Host": "aap.cparada.com:10001",
                     "User-Agent": "Quarkus REST Client",
                     "Content-Type": "application/json;charset=utf-8",
-                    "Content-Length": "1387"
+                    "Content-Length": "1388"
                   },
                   "endpoint": "",
-                  "received_at": "2026-10-02T10:33:35.939577Z"
+                  "received_at": "2026-10-06T13:09:51.160518Z"
                 },
                 "payload": {
                   "bundle": "rhel",
@@ -43,8 +43,8 @@
                         "has_rule": false,
                         "impact_id": 4,
                         "cvss_score": 7,
-                        "publish_date": "2025-09-05T00:00:00+00:00",
-                        "reported_cve": "CVE-2025-39682",
+                        "publish_date": "2025-07-22T00:00:00+00:00",
+                        "reported_cve": "CVE-2025-38352",
                         "known_exploit": true
                       },
                       "metadata": {}
@@ -52,10 +52,10 @@
                     {
                       "payload": {
                         "has_rule": false,
-                        "impact_id": 4,
-                        "cvss_score": 7.3,
-                        "publish_date": "2025-10-13T00:00:00+00:00",
-                        "reported_cve": "CVE-2025-39964",
+                        "impact_id": 5,
+                        "cvss_score": 7.5,
+                        "publish_date": "2026-06-01T12:00:00+00:00",
+                        "reported_cve": "CVE-2026-53266",
                         "known_exploit": true
                       },
                       "metadata": {}
@@ -65,8 +65,8 @@
                         "has_rule": false,
                         "impact_id": 4,
                         "cvss_score": 7,
-                        "publish_date": "2025-07-22T00:00:00+00:00",
-                        "reported_cve": "CVE-2025-38352",
+                        "publish_date": "2025-09-05T00:00:00+00:00",
+                        "reported_cve": "CVE-2025-39682",
                         "known_exploit": true
                       },
                       "metadata": {}
@@ -85,10 +85,10 @@
                     {
                       "payload": {
                         "has_rule": false,
-                        "impact_id": 5,
-                        "cvss_score": 7.5,
-                        "publish_date": "2026-06-01T12:00:00+00:00",
-                        "reported_cve": "CVE-2026-53266",
+                        "impact_id": 4,
+                        "cvss_score": 7.3,
+                        "publish_date": "2025-10-13T00:00:00+00:00",
+                        "reported_cve": "CVE-2025-39964",
                         "known_exploit": true
                       },
                       "metadata": {}
@@ -108,11 +108,11 @@
                   },
                   "context": {
                     "org_id": "15801425",
-                    "display_name": "ec2-100-31-254-25.compute-1.amazonaws.com",
-                    "inventory_id": "c27e7edd-66a7-424a-b01a-c44442f2f43d"
+                    "display_name": "ec2-54-221-181-229.compute-1.amazonaws.com",
+                    "inventory_id": "518e2441-3660-4127-b6b1-278b51675db4"
                   },
                   "severity": "CRITICAL",
-                  "timestamp": "2026-10-02T10:33:34.881282",
+                  "timestamp": "2026-10-06T13:09:50.396781",
                   "account_id": null,
                   "event_type": "system-cve-known-exploit",
                   "application": "vulnerability"
