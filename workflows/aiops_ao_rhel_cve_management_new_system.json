@@ -339,7 +339,7 @@
     {
       "id": "activity_407b95d8_9d68_4966_a202_fc5bdf716f12",
       "type": "aap_job_template",
-      "name": "Run CVE Mitigation",
+      "name": "Remove CVE Mitigation",
       "parameters": {
         "diff_mode": false,
         "credential_id": "9f779d41-702d-4bb6-9fcd-5623833db808",
