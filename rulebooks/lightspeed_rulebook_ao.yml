@@ -51,7 +51,7 @@
       # system-cve-all
       condition: |-
         event.payload.application == "vulnerability"
-        and event.payload.payload.event_type in [
+        and event.payload.event_type in [
           "system-cve-known-exploit"
         ]
       actions:
